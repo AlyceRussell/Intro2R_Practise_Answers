@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>A Light Introduction to R - Answers to Practise Questions by AlyceRussell</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>A Light Introduction to R - Answers to Practise Questions</h1>
+        <p></p>
+
+        <p class="view"><a href="https://github.com/AlyceRussell/Intro2R_Practise_Answers">View the Project on GitHub <small>AlyceRussell/Intro2R_Practise_Answers</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/AlyceRussell/Intro2R_Practise_Answers/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/AlyceRussell/Intro2R_Practise_Answers/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/AlyceRussell/Intro2R_Practise_Answers">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><strong>1. Load the women data from the datasets package and assign it to a variable called "women". You will have a data frame containing the height (inches) and weight (pounds) of 15 women.</strong></p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">women</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">women</span></pre></div>
+
+<p>a. Convert height to m and weight into kg using mathematical operations. Do this by creating new variables height_m and weight_kg, rounding both to 2 decimals. Note: 1 inch = 0.0254 m and 1 pound = 0.454 kg.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">height_m</span> <span class="pl-k">&lt;-</span> round(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">height</span><span class="pl-k">*</span><span class="pl-c1">0.0254</span>, <span class="pl-c1">2</span>)
+<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">weight_kg</span> <span class="pl-k">&lt;-</span> round(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">weight</span><span class="pl-k">*</span><span class="pl-c1">0.454</span>, <span class="pl-c1">2</span>)</pre></div>
+
+<p>b. Calculate BMI from these newly created variables, to 2 decimal places, and then bind this to the women data frame. Note: BMI = weight(kg)/(height(m)^2). Modify this equation to calculate using your variables.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI</span> <span class="pl-k">&lt;-</span> round(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">weight_kg</span><span class="pl-k">/</span>(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">height_m</span><span class="pl-k">^</span><span class="pl-c1">2</span>), <span class="pl-c1">2</span>)</pre></div>
+
+<p>c. What is the mean weight in kg among this sample of women?</p>
+
+<div class="highlight highlight-source-r"><pre>mean(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">weight_kg</span>)</pre></div>
+
+<p>d. How many women have a weight in kg that is less than the mean of this sample?</p>
+
+<div class="highlight highlight-source-r"><pre>length(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">weight_kg</span>[<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">weight_kg</span> <span class="pl-k">&lt;</span> mean(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">weight_kg</span>)]<span class="pl-k">==</span><span class="pl-c1">TRUE</span>)</pre></div>
+
+<p>e. Create a new variable called "BMI_f" for the BMI factor levels. You will need to use logical operations here. </p>
+
+<pre><code>        Low &lt; 18
+        Healthy 18 - 24.99
+        Overweight 25 - 29.99
+        Obese &gt;= 30
+</code></pre>
+
+<p>How many women are considered healthy in this dataset? </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI_f</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI</span>
+<span class="pl-k">for</span> (<span class="pl-smi">i</span> <span class="pl-k">in</span> <span class="pl-c1">1</span><span class="pl-k">:</span>nrow(<span class="pl-smi">women</span>)){
+  <span class="pl-k">if</span>(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI</span>[<span class="pl-smi">i</span>] <span class="pl-k">&lt;</span> <span class="pl-c1">18</span>){
+      <span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI_f</span>[<span class="pl-smi">i</span>] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Low<span class="pl-pds">"</span></span>
+    } <span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI</span>[<span class="pl-smi">i</span>] <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">18</span> <span class="pl-k">&amp;</span> <span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI</span>[<span class="pl-smi">i</span>] <span class="pl-k">&lt;</span> <span class="pl-c1">25</span>){
+      <span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI_f</span>[<span class="pl-smi">i</span>] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Healthy<span class="pl-pds">"</span></span>
+    } <span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI</span>[<span class="pl-smi">i</span>] <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">25</span> <span class="pl-k">&amp;</span> <span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI</span>[<span class="pl-smi">i</span>] <span class="pl-k">&lt;</span> <span class="pl-c1">30</span>){
+      <span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI_f</span>[<span class="pl-smi">i</span>] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Overweight<span class="pl-pds">"</span></span>
+    } <span class="pl-k">else</span> {
+      <span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI_f</span>[<span class="pl-smi">i</span>] <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Obese<span class="pl-pds">"</span></span>
+    }
+}
+length(<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI_f</span>[<span class="pl-smi">women</span><span class="pl-k">$</span><span class="pl-smi">BMI_f</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Healthy<span class="pl-pds">"</span></span>]<span class="pl-k">==</span><span class="pl-c1">TRUE</span>)</pre></div>
+
+<p><strong>2. Load the file called <code>DASS_21.csv</code> into your R environment. You will have a data frame containing the raw results of DASS-21 questionnaire completed by 10 people.</strong></p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">DASS</span> <span class="pl-k">&lt;-</span> read.csv(<span class="pl-s"><span class="pl-pds">"</span>DASS_21.csv<span class="pl-pds">"</span></span>, <span class="pl-v">header</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>)</pre></div>
+
+<p>a. Using the DASS-21 handout, find the Depression score for each individual. What is the average depression score (HINT: use <code>rowSums</code> function)?</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Dep</span> <span class="pl-k">&lt;-</span> rowSums(<span class="pl-smi">DASS</span>[, <span class="pl-c1">2</span><span class="pl-k">+</span>c(<span class="pl-c1">3</span>, <span class="pl-c1">5</span>, <span class="pl-c1">10</span>, <span class="pl-c1">13</span>, <span class="pl-c1">16</span>, <span class="pl-c1">17</span>, <span class="pl-c1">21</span>)])
+mean(<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Dep</span>)</pre></div>
+
+<p>b. Find the Anxiety score for each individual. What is the average anxiety score?</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Anx</span> <span class="pl-k">&lt;-</span> rowSums(<span class="pl-smi">DASS</span>[, <span class="pl-c1">2</span><span class="pl-k">+</span>c(<span class="pl-c1">2</span>, <span class="pl-c1">4</span>, <span class="pl-c1">7</span>, <span class="pl-c1">9</span>, <span class="pl-c1">15</span>, <span class="pl-c1">19</span>, <span class="pl-c1">20</span>)])
+mean(<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Anx</span>)</pre></div>
+
+<p>c. Find the Stress score for each individual. What is the average stress score?</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Str</span> <span class="pl-k">&lt;-</span> rowSums(<span class="pl-smi">DASS</span>[,<span class="pl-c1">2</span><span class="pl-k">+</span>c(<span class="pl-c1">1</span>, <span class="pl-c1">6</span>, <span class="pl-c1">8</span>, <span class="pl-c1">11</span>, <span class="pl-c1">12</span>, <span class="pl-c1">14</span>, <span class="pl-c1">18</span>)])
+mean(<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Str</span>)</pre></div>
+
+<p>d. Find the total DASS score. Find the average for males and females, respectively. (HINT: use a logical function and index)</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Total</span> <span class="pl-k">&lt;-</span> rowSums(<span class="pl-smi">DASS</span>[,<span class="pl-c1">3</span><span class="pl-k">:</span><span class="pl-c1">24</span>])
+mean(<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Total</span>[<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">gender</span><span class="pl-k">==</span><span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span>])
+mean(<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Total</span>[<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">gender</span><span class="pl-k">==</span><span class="pl-s"><span class="pl-pds">"</span>M<span class="pl-pds">"</span></span>])</pre></div>
+
+<p>e. Create a boxplot for total DASS in males versus females. Is there a difference? (HINT: use code in workshop)</p>
+
+<div class="highlight highlight-source-r"><pre>boxplot(<span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">Total</span><span class="pl-k">~</span><span class="pl-smi">DASS</span><span class="pl-k">$</span><span class="pl-smi">gender</span>, <span class="pl-v">main</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Total DASS Score by Gender<span class="pl-pds">"</span></span>, <span class="pl-v">names</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>Female<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Male<span class="pl-pds">"</span></span>), <span class="pl-v">ylab</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Total DASS Score<span class="pl-pds">"</span></span>)</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/AlyceRussell">AlyceRussell</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
